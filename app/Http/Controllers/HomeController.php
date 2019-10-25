@@ -2,6 +2,7 @@
 
 namespace Bulkly\Http\Controllers;
 
+use Bulkly\SocialPostGroups;
 use Illuminate\Http\Request;
 
 use GuzzleHttp\Client;
@@ -461,6 +462,29 @@ class HomeController extends Controller
 
 
         return redirect(route('home'));
+
+    }
+
+    public function history()
+    {
+        $posts = BufferPosting::with('accountInfo','groupInfo')->paginate(20);
+//        $group = SocialPostGroups::distinct('type')->take(10)->get();
+        $groups = SocialPostGroups::select('type')->distinct()->get();
+//        dd($groups);
+        return view('pages.buffer_post',compact('posts','groups'));
+    }
+
+    public function searchType(Request $request)
+    {
+//        dd($request->type);
+        $term = $request->type;
+        $posts = BufferPosting::whereHas('groupInfo',function ($query)use($term){
+            $query->where('type','=',$term);
+        })->with('accountInfo')->paginate(2);
+//        dd($posts);
+        $html = view('pages._ajax_table',compact('posts'))->render();
+        return $html;
+//        return response()->json($html);
 
     }
 

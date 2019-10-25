@@ -332,6 +332,7 @@ if($user_meta['temp_user'] === true){
 <script src="//fast.appcues.com/widget-bundle.js" type="text/javascript"></script>
 
 <script src="{{ asset('js/app.js') }}"></script>
+@yield('js')
 <script>
 
     var hash = window.location.hash;
