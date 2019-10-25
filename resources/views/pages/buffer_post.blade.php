@@ -102,7 +102,6 @@
                     data : {type:value},
                     type: "get",
                     success : function(response){
-                        console.log(response);
                         $('.ajax-content').html(response);
                     },
 

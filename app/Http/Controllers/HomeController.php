@@ -478,9 +478,11 @@ class HomeController extends Controller
     {
 //        dd($request->type);
         $term = $request->type;
+        if(($term == 'all') || ($term == 'null'))
+            return redirect()->route('history');
         $posts = BufferPosting::whereHas('groupInfo',function ($query)use($term){
             $query->where('type','=',$term);
-        })->with('accountInfo')->paginate(2);
+        })->with('accountInfo')->paginate(10);
 //        dd($posts);
         $html = view('pages._ajax_table',compact('posts'))->render();
         return $html;
